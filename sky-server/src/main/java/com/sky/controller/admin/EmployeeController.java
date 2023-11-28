@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -31,15 +32,14 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
-    @Autowired
-    private JwtProperties jwtProperties;
 
-    /**
-     * 登录
-     *
+    /*
      * @param employeeLoginDTO
-     * @return
-     */
+     * @return com.sky.result.Result<com.sky.vo.EmployeeLoginVO>
+     * @author kevonlin
+     * @create 2023/11/28 14:31
+     * @description 登录功能
+     **/
     @PostMapping("/login")
     @ApiOperation("员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -48,15 +48,23 @@ public class EmployeeController {
         return employeeService.login(employeeLoginDTO);
     }
 
-    /**
-     * 退出
-     *
-     * @return
-     */
+
+    /*
+     * @param
+     * @return com.sky.result.Result<java.lang.String>
+     * @author kevonlin
+     * @create 2023/11/28 14:31
+     * @description 退出登录
+     **/
     @PostMapping("/logout")
     @ApiOperation("退出登录 ")
     public Result<String> logout() {
         return Result.success();
     }
 
+    @PostMapping
+    @ApiOperation("添加员工")
+    public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO){
+        return employeeService.addEmployee(employeeDTO);
+    }
 }

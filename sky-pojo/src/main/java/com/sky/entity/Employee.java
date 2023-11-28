@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="employee")
 @Data
 public class Employee implements Serializable {
+    @TableId
     private Long id;
 
     private String name;

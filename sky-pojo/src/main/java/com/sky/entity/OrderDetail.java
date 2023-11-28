@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="order_detail")
 @Data
 public class OrderDetail implements Serializable {
+    @TableId
     private Long id;
 
     private String name;

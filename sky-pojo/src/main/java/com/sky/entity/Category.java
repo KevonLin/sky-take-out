@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="category")
 @Data
 public class Category implements Serializable {
+    @TableId
     private Long id;
 
     private Integer type;

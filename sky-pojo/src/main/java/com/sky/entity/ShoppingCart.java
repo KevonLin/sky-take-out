@@ -15,6 +15,7 @@ import lombok.Data;
 @TableName(value ="shopping_cart")
 @Data
 public class ShoppingCart implements Serializable {
+    @TableId
     private Long id;
 
     private String name;

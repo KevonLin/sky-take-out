@@ -13,6 +13,7 @@ import lombok.Data;
 @TableName(value ="dish_flavor")
 @Data
 public class DishFlavor implements Serializable {
+    @TableId
     private Long id;
 
     private Long dishId;

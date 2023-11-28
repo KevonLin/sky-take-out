@@ -3,6 +3,11 @@ package com.sky.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
+import com.sky.constant.StatusConstant;
+import com.sky.context.BaseContext;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -13,10 +18,12 @@ import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +66,29 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
             return Result.success(employeeLoginVO);
         }
         return Result.error("登陆失败");
+    }
+
+    @Override
+    public Result<String> addEmployee(EmployeeDTO employeeDTO) {
+        // 判断用户是否重复 username唯一 全局异常处理器可以处理
+//        String username = employeeDTO.getUsername();
+//        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(Employee::getUsername, username);
+//        Long count = employeeMapper.selectCount(wrapper);
+//        if (count > 0) {
+//            return Result.error();
+//        }
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setCreateTime(new Date());
+        employee.setUpdateTime(new Date());
+        // 设置正确的用户 每个请求都是单独的线程 可以使用ThreadLocal存储token中的empId
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.insert(employee);
+        return Result.success();
     }
 }
 

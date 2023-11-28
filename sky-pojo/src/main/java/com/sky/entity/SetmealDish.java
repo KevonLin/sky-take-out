@@ -14,6 +14,7 @@ import lombok.Data;
 @TableName(value ="setmeal_dish")
 @Data
 public class SetmealDish implements Serializable {
+    @TableId
     private Long id;
 
     private Long setmealId;
