@@ -1,23 +1,25 @@
 package com.sky.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.JwtClaimsConstant;
-import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +91,24 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
         return Result.success();
+    }
+
+    @Override
+    public Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO) {
+        String name = employeePageQueryDTO.getName();
+        int pageNum = employeePageQueryDTO.getPage();
+        int pageSize = employeePageQueryDTO.getPageSize();
+
+        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(!StringUtils.isEmpty(name), Employee::getName, name);
+
+        IPage<Employee> employeeIPage = new Page<>(pageNum, pageSize);
+        IPage<Map> employeeIPageMap = employeeMapper.selectPageMap(employeeIPage, employeePageQueryDTO);
+
+        PageResult pageResult = new PageResult();
+        pageResult.setTotal(employeeIPageMap.getTotal());
+        pageResult.setRecords(employeeIPageMap.getRecords());
+        return Result.success(pageResult);
     }
 }
 
