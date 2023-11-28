@@ -110,6 +110,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         pageResult.setRecords(employeeIPageMap.getRecords());
         return Result.success(pageResult);
     }
+
+    @Override
+    public Result<String> toggleStatus(Integer status, Integer id) {
+        Employee employee = employeeMapper.selectById(id);
+        employee.setStatus(status);
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(new Date());
+        employeeMapper.updateById(employee);
+        return Result.success();
+    }
 }
 
 

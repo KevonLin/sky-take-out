@@ -42,4 +42,13 @@ public interface EmployeeService extends IService<Employee> {
      * @description 分页查询员工
      **/
     Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /*
+     * @param status
+     * @return com.sky.result.Result<java.lang.String>
+     * @author kevonlin
+     * @create 2023/11/28 18:12
+     * @description 修改员工账号状态
+     **/
+    Result<String> toggleStatus(Integer status, Integer id);
 }

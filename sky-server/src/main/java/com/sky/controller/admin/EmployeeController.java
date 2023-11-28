@@ -62,7 +62,7 @@ public class EmployeeController {
 
     @PostMapping
     @ApiOperation("添加员工")
-    public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO){
+    public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("添加员工，参数为:{}", employeeDTO);
         return employeeService.addEmployee(employeeDTO);
     }
@@ -72,5 +72,12 @@ public class EmployeeController {
     public Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("员工分页查询，参数为:{}", employeePageQueryDTO);
         return employeeService.getPage(employeePageQueryDTO);
+    }
+
+    @PostMapping("status/{status}")
+    @ApiOperation("修改员工状态")
+    public Result<String> toggleStatus(@PathVariable Integer status, @RequestParam Integer id) {
+        log.info("修改员工账号状态，参数:{}", status);
+        return employeeService.toggleStatus(status, id);
     }
 }
