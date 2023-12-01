@@ -32,7 +32,7 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 14:36
      * @description 添加员工
      **/
-    Result<String> addEmployee(EmployeeDTO employeeDTO);
+    Result addEmployee(EmployeeDTO employeeDTO);
 
     /*
      * @param employeePageQueryDTO
@@ -50,5 +50,5 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 18:12
      * @description 修改员工账号状态
      **/
-    Result<String> toggleStatus(Integer status, Integer id);
+    Result toggleStatus(Integer status, Integer id);
 }

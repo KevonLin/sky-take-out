@@ -77,7 +77,13 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    //配置mybatis-plus插件
+    /*
+     * @param
+     * @return com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor
+     * @author kevonlin
+     * @create 2023/12/1 10:38
+     * @description 配置mybatis-plus插件
+     **/
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();

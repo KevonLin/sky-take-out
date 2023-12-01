@@ -71,7 +71,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public Result<String> addEmployee(EmployeeDTO employeeDTO) {
+    public Result addEmployee(EmployeeDTO employeeDTO) {
         // 判断用户是否重复 username唯一 全局异常处理器可以处理
 //        String username = employeeDTO.getUsername();
 //        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
@@ -112,7 +112,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public Result<String> toggleStatus(Integer status, Integer id) {
+    public Result toggleStatus(Integer status, Integer id) {
         Employee employee = employeeMapper.selectById(id);
         employee.setStatus(status);
         employee.setUpdateUser(BaseContext.getCurrentId());
@@ -120,6 +120,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         employeeMapper.updateById(employee);
         return Result.success();
     }
+
 }
 
 

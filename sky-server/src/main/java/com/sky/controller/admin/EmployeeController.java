@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -14,9 +15,11 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,13 +59,13 @@ public class EmployeeController {
      **/
     @PostMapping("logout")
     @ApiOperation("退出登录 ")
-    public Result<String> logout() {
+    public Result logout() {
         return Result.success();
     }
 
     @PostMapping
     @ApiOperation("添加员工")
-    public Result<String> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("添加员工，参数为:{}", employeeDTO);
         return employeeService.addEmployee(employeeDTO);
     }
@@ -75,9 +78,32 @@ public class EmployeeController {
     }
 
     @PostMapping("status/{status}")
-    @ApiOperation("修改员工状态")
-    public Result<String> toggleStatus(@PathVariable Integer status, @RequestParam Integer id) {
-        log.info("修改员工账号状态，参数:{}", status);
+    @ApiOperation("修改员工账号状态")
+    // @PathVariable ("status") 与路径一直可以不用写value
+    // 非查询类的Result的泛型不用指定
+    public Result toggleStatus(@PathVariable Integer status, @RequestParam Integer id) {
+        log.info("修改员工账号状态，ID:{},状态:{}", id, status);
         return employeeService.toggleStatus(status, id);
+    }
+
+    @GetMapping("{id}")
+    @ApiOperation("根据ID查询员工信息")
+    public Result<Employee> getEmployeeById(@PathVariable Integer id) {
+        log.info("根据ID查询员工信息");
+        Employee employee = employeeService.getById(id);
+        employee.setPassword("***");
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result editInfo(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("编辑员工信息：{}", employeeDTO);
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employee.setUpdateTime(new Date());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeService.updateById(employee);
+        return Result.success();
     }
 }
