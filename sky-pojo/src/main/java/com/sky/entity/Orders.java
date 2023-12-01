@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -50,13 +51,13 @@ public class Orders implements Serializable {
 
     private String rejectionReason;
 
-    private Date cancelTime;
+    private LocalDateTime cancelTime;
 
-    private Date estimatedDeliveryTime;
+    private LocalDateTime estimatedDeliveryTime;
 
     private Integer deliveryStatus;
 
-    private Date deliveryTime;
+    private LocalDateTime deliveryTime;
 
     private Integer packAmount;
 

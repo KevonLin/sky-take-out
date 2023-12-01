@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +85,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         BeanUtils.copyProperties(employeeDTO, employee);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(new Date());
-        employee.setUpdateTime(new Date());
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
         // 设置正确的用户 每个请求都是单独的线程 可以使用ThreadLocal存储token中的empId
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
@@ -116,7 +117,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         Employee employee = employeeMapper.selectById(id);
         employee.setStatus(status);
         employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(new Date());
+        employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.updateById(employee);
         return Result.success();
     }
