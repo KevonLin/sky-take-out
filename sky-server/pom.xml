@@ -70,10 +70,10 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.github.pagehelper</groupId>-->
-<!--            <artifactId>pagehelper-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.pagehelper</groupId>-->
+        <!--            <artifactId>pagehelper-spring-boot-starter</artifactId>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -121,9 +121,9 @@
         </dependency>
 
         <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring</artifactId>
-            </dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

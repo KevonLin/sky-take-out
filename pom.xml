@@ -133,6 +133,11 @@
                 <artifactId>knife4j-spring</artifactId>
                 <version>3.0.3</version>
             </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>8.5.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
