@@ -96,8 +96,8 @@ public class EmployeeController {
         log.info("编辑员工信息：{}", employeeDTO);
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeService.updateById(employee);
         return Result.success();
     }

@@ -51,10 +51,10 @@ public class CategoryController {
         //分类状态默认为禁用状态0
         category.setStatus(StatusConstant.DISABLE);
         //设置创建时间、修改时间、创建人、修改人
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setCreateTime(LocalDateTime.now());
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setCreateUser(BaseContext.getCurrentId());
+//        category.setUpdateUser(BaseContext.getCurrentId());
         categoryService.save(category);
         return Result.success();
     }
@@ -101,8 +101,8 @@ public class CategoryController {
         log.info("修改分类，参数:{}", categoryDTO);
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setUpdateUser(BaseContext.getCurrentId());
         categoryService.updateById(category);
         return Result.success();
     }
@@ -122,8 +122,8 @@ public class CategoryController {
         Category category = new Category();
         BeanUtils.copyProperties(dbCategory, category);
         category.setStatus(status);
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setUpdateUser(BaseContext.getCurrentId());
         categoryService.updateById(category);
         return Result.success();
     }

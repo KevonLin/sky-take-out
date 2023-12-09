@@ -84,8 +84,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         BeanUtils.copyProperties(employeeDTO, employee);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
         // 设置正确的用户 每个请求都是单独的线程 可以使用ThreadLocal存储token中的empId
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
@@ -115,8 +115,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     public Result toggleStatus(Integer status, Integer id) {
         Employee employee = employeeMapper.selectById(id);
         employee.setStatus(status);
-        employee.setUpdateUser(BaseContext.getCurrentId());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.updateById(employee);
         return Result.success();
     }
