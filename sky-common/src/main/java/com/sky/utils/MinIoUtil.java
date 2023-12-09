@@ -58,7 +58,7 @@ public class MinIoUtil {
             StringBuilder stringBuilder = new StringBuilder();
             if (originalFilename != null) {
                 String objectName = UUID.randomUUID().toString();
-                String extendName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+                String extendName = originalFilename.substring(originalFilename.lastIndexOf("."));
 
                 minioClient.putObject(PutObjectArgs.builder()
                         .bucket(bucketName)
@@ -73,7 +73,6 @@ public class MinIoUtil {
                         .append(bucketName)
                         .append("/")
                         .append(objectName)
-                        .append(".")
                         .append(extendName);
             }
 

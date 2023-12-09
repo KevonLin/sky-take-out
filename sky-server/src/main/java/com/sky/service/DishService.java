@@ -1,7 +1,9 @@
 package com.sky.service;
 
+import com.sky.dto.DishDTO;
 import com.sky.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sky.result.Result;
 
 /**
 * @author kevonlin
@@ -10,4 +12,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface DishService extends IService<Dish> {
 
+    /*
+     * @param dishDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/9 22:00
+     * @description 添加菜品
+     **/
+    Result addDish(DishDTO dishDTO);
 }
