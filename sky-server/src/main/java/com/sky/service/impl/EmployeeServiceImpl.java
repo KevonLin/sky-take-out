@@ -100,7 +100,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         int pageSize = employeePageQueryDTO.getPageSize();
 
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isEmpty(name), Employee::getName, name);
+        wrapper.like(!StringUtils.isEmpty(name), Employee::getName, name)
+                .orderByDesc(Employee::getCreateTime);
 
         IPage<Employee> employeeIPage = new Page<>(pageNum, pageSize);
         IPage<Employee> employeeIPageMap = employeeMapper.selectPage(employeeIPage, wrapper);

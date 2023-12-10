@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevonlin
@@ -57,6 +58,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
     @Override
     public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO) {
+        /* 两次查询并手动封装VO
         Integer categoryId = dishPageQueryDTO.getCategoryId();
         String name = dishPageQueryDTO.getName();
         Integer status = dishPageQueryDTO.getStatus();
@@ -69,7 +71,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(categoryId != null, Dish::getCategoryId, categoryId)
                 .like(!StringUtils.isEmpty(name), Dish::getName, name)
-                .like(status != null, Dish::getStatus, status);
+                .like(status != null, Dish::getStatus, status)
+                .orderByDesc(Dish::getCreateTime);
         IPage<Dish> dishIPage = new Page<>(pageNum, pageSize);
         IPage<Dish> dishIPageMap = dishMapper.selectPage(dishIPage, wrapper);
 
@@ -88,6 +91,13 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
             dishVOList.add(dishVO);
         }
         pageResult.setRecords(dishVOList);
+        return Result.success(pageResult);
+         */
+
+        //自定义SQL语句实现联表查询
+        IPage<DishVO> page = new Page<>(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
+        IPage<Map> pageMap = dishMapper.pageQuery(page, dishPageQueryDTO);
+        PageResult pageResult = new PageResult(pageMap.getTotal(), pageMap.getRecords());
         return Result.success(pageResult);
     }
 }

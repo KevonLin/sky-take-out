@@ -5,17 +5,17 @@
 <mapper namespace="com.sky.mapper.DishMapper">
 
     <resultMap id="BaseResultMap" type="com.sky.entity.Dish">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
-            <result property="price" column="price" jdbcType="DECIMAL"/>
-            <result property="image" column="image" jdbcType="VARCHAR"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="createUser" column="create_user" jdbcType="BIGINT"/>
-            <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="category_id" jdbcType="BIGINT"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -24,4 +24,22 @@
         status,create_time,update_time,
         create_user,update_user
     </sql>
+
+    <select id="pageQuery" resultType="java.util.Map">
+        select d.*, d.update_time updateTime, c.name categoryName
+        from dish d
+        left join category c on d.category_id = c.id
+        <where>
+            <if test="dishPageQueryDTO.name != null and dishPageQueryDTO.name.length() > 0">
+                and d.name like concat('%', #{dishPageQueryDTO.name},'%')
+            </if>
+            <if test="dishPageQueryDTO.categoryId != null">
+                and d.category_id = #{dishPageQueryDTO.categoryId}
+            </if>
+            <if test="dishPageQueryDTO.status != null">
+                and d.status = #{dishPageQueryDTO.status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
 </mapper>

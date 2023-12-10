@@ -40,7 +40,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(!StringUtils.isEmpty(categoryName), Category::getName, categoryName)
-                .like(categoryType != null, Category::getType, categoryType);
+                .like(categoryType != null, Category::getType, categoryType)
+                .orderByAsc(Category::getSort)
+                .orderByDesc(Category::getCreateTime);
 
         IPage<Category> categoryIPage = new Page<>(pageNum, pageSize);
         IPage<Category> categoryIPageMap = categoryMapper.selectPage(categoryIPage, wrapper);
