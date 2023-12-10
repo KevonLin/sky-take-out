@@ -19,7 +19,7 @@ import java.util.Map;
 @Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
 
-    IPage<Map> pageQuery(IPage<Category> categoryIPage, @Param("categoryPageQueryDTO") CategoryPageQueryDTO categoryPageQueryDTO);
+//    IPage<Map> pageQuery(IPage<Category> categoryIPage, @Param("categoryPageQueryDTO") CategoryPageQueryDTO categoryPageQueryDTO);
 }
 
 

@@ -34,14 +34,17 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     @Override
     public Result<PageResult> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
         String categoryName = categoryPageQueryDTO.getName();
+        Integer categoryType = categoryPageQueryDTO.getType();
         int pageNum = categoryPageQueryDTO.getPage();
         int pageSize = categoryPageQueryDTO.getPageSize();
 
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(!StringUtils.isEmpty(categoryName), Category::getName, categoryName);
+        wrapper.like(!StringUtils.isEmpty(categoryName), Category::getName, categoryName)
+                .like(categoryType != null, Category::getType, categoryType);
 
         IPage<Category> categoryIPage = new Page<>(pageNum, pageSize);
-        IPage<Map> categoryIPageMap = categoryMapper.pageQuery(categoryIPage, categoryPageQueryDTO);
+        IPage<Category> categoryIPageMap = categoryMapper.selectPage(categoryIPage, wrapper);
+//        IPage<Map> categoryIPageMap = categoryMapper.pageQuery(categoryIPage, categoryPageQueryDTO);
 
         PageResult pageResult = new PageResult();
         pageResult.setTotal(categoryIPageMap.getTotal());

@@ -26,14 +26,14 @@
         update_time,create_user,update_user
     </sql>
 
-    <select id="selectPageMap" resultType="java.util.Map">
-        select *
-        from employee
-        <where>
-            <if test="employeePageQueryDTO.name != null and employeePageQueryDTO.name.length() > 0">
-                and name like concat('%',#{employeePageQueryDTO.name},'%')
-            </if>
-        </where>
-        order by create_time desc
-    </select>
+<!--    <select id="selectPageMap" resultType="java.util.Map">-->
+<!--        select *-->
+<!--        from employee-->
+<!--        <where>-->
+<!--            <if test="employeePageQueryDTO.name != null and employeePageQueryDTO.name.length() > 0">-->
+<!--                and name like concat('%',#{employeePageQueryDTO.name},'%')-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by create_time desc-->
+<!--    </select>-->
 </mapper>

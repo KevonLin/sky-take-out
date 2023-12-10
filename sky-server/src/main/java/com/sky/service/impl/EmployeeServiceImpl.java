@@ -103,7 +103,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         wrapper.like(!StringUtils.isEmpty(name), Employee::getName, name);
 
         IPage<Employee> employeeIPage = new Page<>(pageNum, pageSize);
-        IPage<Map> employeeIPageMap = employeeMapper.selectPageMap(employeeIPage, employeePageQueryDTO);
+        IPage<Employee> employeeIPageMap = employeeMapper.selectPage(employeeIPage, wrapper);
+
+//        IPage<Map> employeeIPageMap = employeeMapper.selectPageMap(employeeIPage, employeePageQueryDTO);
 
         PageResult pageResult = new PageResult();
         pageResult.setTotal(employeeIPageMap.getTotal());

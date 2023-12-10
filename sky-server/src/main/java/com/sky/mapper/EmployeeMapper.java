@@ -26,7 +26,7 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
      * @create 2023/11/28 17:31
      * @description 分页查询员工信息
      **/
-    IPage<Map> selectPageMap(IPage<Employee> employeeIPage, @Param("employeePageQueryDTO") EmployeePageQueryDTO employeePageQueryDTO);
+//    IPage<Map> selectPageMap(IPage<Employee> employeeIPage, @Param("employeePageQueryDTO") EmployeePageQueryDTO employeePageQueryDTO);
 }
 
 

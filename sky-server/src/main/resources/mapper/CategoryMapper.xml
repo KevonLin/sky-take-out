@@ -22,16 +22,16 @@
         update_time,create_user,update_user
     </sql>
 
-    <select id="pageQuery" resultType="com.sky.entity.Category">
-        select * from category
-        <where>
-            <if test="categoryPageQueryDTO.name != null and categoryPageQueryDTO.name != ''">
-                and name like concat('%',#{categoryPageQueryDTO.name},'%')
-            </if>
-            <if test="categoryPageQueryDTO.type != null">
-                and type = #{categoryPageQueryDTO.type}
-            </if>
-        </where>
-        order by sort asc , create_time desc
-    </select>
+<!--    <select id="pageQuery" resultType="com.sky.entity.Category">-->
+<!--        select * from category-->
+<!--        <where>-->
+<!--            <if test="categoryPageQueryDTO.name != null and categoryPageQueryDTO.name != ''">-->
+<!--                and name like concat('%',#{categoryPageQueryDTO.name},'%')-->
+<!--            </if>-->
+<!--            <if test="categoryPageQueryDTO.type != null">-->
+<!--                and type = #{categoryPageQueryDTO.type}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by sort asc , create_time desc-->
+<!--    </select>-->
 </mapper>

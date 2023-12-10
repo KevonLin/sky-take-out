@@ -1,8 +1,10 @@
 package com.sky.service;
 
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 
 /**
@@ -20,4 +22,13 @@ public interface DishService extends IService<Dish> {
      * @description 添加菜品
      **/
     Result addDish(DishDTO dishDTO);
+
+    /*
+     * @param dishPageQueryDTO 页面请求数据
+     * @return com.sky.result.Result<com.sky.vo.DishVO>
+     * @author kevonlin
+     * @create 2023/12/10 9:26
+     * @description 菜品分页查询
+     **/
+    Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO);
 }
