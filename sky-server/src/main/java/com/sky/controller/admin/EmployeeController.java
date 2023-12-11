@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
@@ -41,7 +42,9 @@ public class EmployeeController {
     @ApiOperation("员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
-        return employeeService.login(employeeLoginDTO);
+        EmployeeLoginVO employeeLoginVO = employeeService.login(employeeLoginDTO);
+        if (employeeLoginVO == null) return Result.error(MessageConstant.LOGIN_FAILED);
+        return Result.success(employeeLoginVO);
     }
 
 
@@ -69,7 +72,8 @@ public class EmployeeController {
     @ApiOperation("添加员工")
     public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("添加员工，参数为:{}", employeeDTO);
-        return employeeService.addEmployee(employeeDTO);
+        employeeService.addEmployee(employeeDTO);
+        return Result.success();
     }
 
     /*
@@ -83,7 +87,8 @@ public class EmployeeController {
     @ApiOperation("查询员工")
     public Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("员工分页查询，参数为:{}", employeePageQueryDTO);
-        return employeeService.getPage(employeePageQueryDTO);
+        PageResult page = employeeService.getPage(employeePageQueryDTO);
+        return Result.success(page);
     }
 
     /*
@@ -100,7 +105,8 @@ public class EmployeeController {
     // 非查询类的Result的泛型不用指定
     public Result toggleStatus(@PathVariable Integer status, @RequestParam Integer id) {
         log.info("修改员工账号状态，ID:{},状态:{}", id, status);
-        return employeeService.toggleStatus(status, id);
+        employeeService.toggleStatus(status, id);
+        return Result.success();
     }
 
     /*

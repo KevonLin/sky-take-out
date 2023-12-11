@@ -22,7 +22,7 @@ public interface CategoryService extends IService<Category> {
      * @create 2023/12/1 11:22
      * @description 分类的分压查询
      **/
-    Result<PageResult> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
+    PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
     /*
      * @param type
@@ -31,5 +31,5 @@ public interface CategoryService extends IService<Category> {
      * @create 2023/12/1 17:41
      * @description 根据类型查询分类列表
      **/
-    Result<List<Category>> getByType(Integer type);
+    List<Category> getByType(Integer type);
 }

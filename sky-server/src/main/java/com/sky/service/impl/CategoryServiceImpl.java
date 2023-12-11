@@ -32,7 +32,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     private CategoryMapper categoryMapper;
 
     @Override
-    public Result<PageResult> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
+    public PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
         String categoryName = categoryPageQueryDTO.getName();
         Integer categoryType = categoryPageQueryDTO.getType();
         int pageNum = categoryPageQueryDTO.getPage();
@@ -51,16 +51,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
         PageResult pageResult = new PageResult();
         pageResult.setTotal(categoryIPageMap.getTotal());
         pageResult.setRecords(categoryIPageMap.getRecords());
-        return Result.success(pageResult);
+        return pageResult;
     }
 
     @Override
-    public Result<List<Category>> getByType(Integer type) {
+    public List<Category> getByType(Integer type) {
         LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Category::getType, type);
-        List<Category> categories = categoryMapper.selectList(wrapper);
-
-        return Result.success(categories);
+        return categoryMapper.selectList(wrapper);
     }
 }
 

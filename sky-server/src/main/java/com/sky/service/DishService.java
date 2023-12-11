@@ -23,7 +23,7 @@ public interface DishService extends IService<Dish> {
      * @create 2023/12/9 22:00
      * @description 添加菜品
      **/
-    Result addDish(DishDTO dishDTO);
+    void addDish(DishDTO dishDTO);
 
     /*
      * @param dishPageQueryDTO 页面请求数据
@@ -32,7 +32,7 @@ public interface DishService extends IService<Dish> {
      * @create 2023/12/10 9:26
      * @description 菜品分页查询
      **/
-    Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO);
+    PageResult getDishPage(DishPageQueryDTO dishPageQueryDTO);
 
     /*
      * @param ids 要删除的菜品ID
@@ -41,5 +41,5 @@ public interface DishService extends IService<Dish> {
      * @create 2023/12/10 11:12
      * @description 批量删除菜品
      **/
-    Result deleteDish(List<Long> ids);
+    void deleteDish(List<Long> ids);
 }

@@ -23,7 +23,7 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 14:36
      * @description 登录功能
      **/
-    Result<EmployeeLoginVO> login(EmployeeLoginDTO employeeLoginDTO);
+    EmployeeLoginVO login(EmployeeLoginDTO employeeLoginDTO);
 
     /*
      * @param employeeDTO
@@ -32,7 +32,7 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 14:36
      * @description 添加员工
      **/
-    Result addEmployee(EmployeeDTO employeeDTO);
+    void addEmployee(EmployeeDTO employeeDTO);
 
     /*
      * @param employeePageQueryDTO
@@ -41,7 +41,7 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 16:43
      * @description 分页查询员工
      **/
-    Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO);
+    PageResult getPage(EmployeePageQueryDTO employeePageQueryDTO);
 
     /*
      * @param status
@@ -50,5 +50,5 @@ public interface EmployeeService extends IService<Employee> {
      * @create 2023/11/28 18:12
      * @description 修改员工账号状态
      **/
-    Result toggleStatus(Integer status, Integer id);
+    void toggleStatus(Integer status, Integer id);
 }

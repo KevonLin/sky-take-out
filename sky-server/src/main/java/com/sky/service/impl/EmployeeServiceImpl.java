@@ -45,7 +45,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     private JwtProperties jwtProperties;
 
     @Override
-    public Result<EmployeeLoginVO> login(EmployeeLoginDTO employeeLoginDTO) {
+    public EmployeeLoginVO login(EmployeeLoginDTO employeeLoginDTO) {
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Employee::getUsername, employeeLoginDTO.getUsername());
         Employee employee = employeeMapper.selectOne(wrapper);
@@ -65,13 +65,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
                     .token(token)
                     .build();
 
-            return Result.success(employeeLoginVO);
+            return employeeLoginVO;
         }
-        return Result.error("登陆失败");
+        return null;
     }
 
     @Override
-    public Result addEmployee(EmployeeDTO employeeDTO) {
+    public void addEmployee(EmployeeDTO employeeDTO) {
         // 判断用户是否重复 username唯一 全局异常处理器可以处理
 //        String username = employeeDTO.getUsername();
 //        LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
@@ -90,11 +90,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
-        return Result.success();
     }
 
     @Override
-    public Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO) {
+    public PageResult getPage(EmployeePageQueryDTO employeePageQueryDTO) {
         String name = employeePageQueryDTO.getName();
         int pageNum = employeePageQueryDTO.getPage();
         int pageSize = employeePageQueryDTO.getPageSize();
@@ -111,17 +110,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         PageResult pageResult = new PageResult();
         pageResult.setTotal(employeeIPageMap.getTotal());
         pageResult.setRecords(employeeIPageMap.getRecords());
-        return Result.success(pageResult);
+        return pageResult;
     }
 
     @Override
-    public Result toggleStatus(Integer status, Integer id) {
+    public void toggleStatus(Integer status, Integer id) {
         Employee employee = employeeMapper.selectById(id);
         employee.setStatus(status);
 //        employee.setUpdateUser(BaseContext.getCurrentId());
 //        employee.setUpdateTime(LocalDateTime.now());
         employeeMapper.updateById(employee);
-        return Result.success();
     }
 
 }

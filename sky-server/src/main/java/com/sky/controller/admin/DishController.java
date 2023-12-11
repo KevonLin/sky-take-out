@@ -39,7 +39,8 @@ public class DishController {
     @PostMapping
     @ApiOperation("添加菜品")
     public Result addDish(@RequestBody DishDTO dishDTO) {
-        return dishService.addDish(dishDTO);
+        dishService.addDish(dishDTO);
+        return Result.success();
     }
 
     /*
@@ -52,7 +53,8 @@ public class DishController {
     @GetMapping("page")
     @ApiOperation("菜品分页查询")
     public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO){
-        return dishService.getDishPage(dishPageQueryDTO);
+        PageResult dishPage = dishService.getDishPage(dishPageQueryDTO);
+        return Result.success(dishPage);
     }
 
     /*
@@ -67,6 +69,10 @@ public class DishController {
     @ApiOperation("批量删除菜品")
     public Result deleteDish(@RequestParam List<Long> ids){
         log.info("菜品批量删除：{}", ids);
-        return dishService.deleteDish(ids);
+        if (ids.size() == 0) {
+            return Result.error("未选中菜品");
+        }
+        dishService.deleteDish(ids);
+        return Result.success();
     }
 }

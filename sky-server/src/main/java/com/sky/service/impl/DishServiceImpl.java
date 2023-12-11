@@ -48,7 +48,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 //    private CategoryMapper categoryMapper;
 
     @Override
-    public Result addDish(DishDTO dishDTO) {
+    public void addDish(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO, dish);
         dishMapper.insert(dish);
@@ -60,11 +60,10 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
                 dishFlavorMapper.insert(flavor);
             }
         }
-        return Result.success();
     }
 
     @Override
-    public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO) {
+    public PageResult getDishPage(DishPageQueryDTO dishPageQueryDTO) {
         /* 两次查询并手动封装VO
         Integer categoryId = dishPageQueryDTO.getCategoryId();
         String name = dishPageQueryDTO.getName();
@@ -104,16 +103,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         //自定义SQL语句实现联表查询
         IPage<DishVO> page = new Page<>(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         IPage<Map> pageMap = dishMapper.pageQuery(page, dishPageQueryDTO);
-        PageResult pageResult = new PageResult(pageMap.getTotal(), pageMap.getRecords());
-        return Result.success(pageResult);
+        return new PageResult(pageMap.getTotal(), pageMap.getRecords());
     }
 
     @Override
-    public Result deleteDish(List<Long> ids) {
+    public void deleteDish(List<Long> ids) {
         // 炫耀操作的表: dish dish_flavor setmeal_dish
-        if (ids.size() == 0) {
-            return Result.error("未选中菜品");
-        }
         // 1.判断是否在售卖
         for (Long id : ids) {
             LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -148,7 +143,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         if (dishFlavors != null) {
             dishFlavorMapper.deleteBatchIds(dishFlavors);
         }
-        return Result.success();
     }
 }
 
