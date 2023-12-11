@@ -2,13 +2,17 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
+import com.sky.entity.DishFlavor;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
+import com.sky.service.DishFlavorService;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,8 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private DishFlavorService dishFlavorService;
     /*
      * @param dishDTO
      * @return com.sky.result.Result
@@ -74,5 +80,19 @@ public class DishController {
         }
         dishService.deleteDish(ids);
         return Result.success();
+    }
+
+    /*
+     * @param id
+     * @return com.sky.result.Result<com.sky.vo.DishVO>
+     * @author kevonlin
+     * @create 2023/12/11 20:42
+     * @description 根据ID查询菜品信息
+     **/
+    @GetMapping("{id}")
+    @ApiOperation("根据ID查询菜品信息")
+    public Result<DishVO> getDishById(@PathVariable Long id){
+        DishVO dishVO = dishService.getDishByIdWithFlavor(id);
+        return Result.success(dishVO);
     }
 }

@@ -144,6 +144,22 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
             dishFlavorMapper.deleteBatchIds(dishFlavors);
         }
     }
+
+    @Override
+    public DishVO getDishByIdWithFlavor(Long id) {
+        DishVO dishVO = new DishVO();
+        // 1.查询到菜品详细信息
+        Dish dish = dishMapper.selectById(id);
+        // 2.装如VO
+        BeanUtils.copyProperties(dish, dishVO);
+        // 3.根据菜品ID查询相关口味信息
+        LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, id);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.selectList(dishFlavorLambdaQueryWrapper);
+        // 4.装如VO
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
 }
 
 
