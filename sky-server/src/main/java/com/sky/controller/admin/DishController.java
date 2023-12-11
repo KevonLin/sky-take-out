@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -35,6 +36,7 @@ public class DishController {
 
     @Autowired
     private DishFlavorService dishFlavorService;
+
     /*
      * @param dishDTO
      * @return com.sky.result.Result
@@ -58,7 +60,7 @@ public class DishController {
      **/
     @GetMapping("page")
     @ApiOperation("菜品分页查询")
-    public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO){
+    public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO) {
         PageResult dishPage = dishService.getDishPage(dishPageQueryDTO);
         return Result.success(dishPage);
     }
@@ -73,7 +75,7 @@ public class DishController {
     @Transactional
     @DeleteMapping
     @ApiOperation("批量删除菜品")
-    public Result deleteDish(@RequestParam List<Long> ids){
+    public Result deleteDish(@RequestParam List<Long> ids) {
         log.info("菜品批量删除：{}", ids);
         if (ids.size() == 0) {
             return Result.error("未选中菜品");
@@ -91,8 +93,44 @@ public class DishController {
      **/
     @GetMapping("{id}")
     @ApiOperation("根据ID查询菜品信息")
-    public Result<DishVO> getDishById(@PathVariable Long id){
+    public Result<DishVO> getDishById(@PathVariable Long id) {
+        log.info("根据ID查询菜品信息:{}", id);
         DishVO dishVO = dishService.getDishByIdWithFlavor(id);
         return Result.success(dishVO);
+    }
+
+    /*
+     * @param dishDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 22:00
+     * @description 修改菜品
+     **/
+    @PutMapping
+    @ApiOperation("修改菜品")
+    public Result updateDish(@RequestBody DishDTO dishDTO) {
+        log.info("修改菜品:{}", dishDTO);
+        // 1.修改菜品表
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishService.updateById(dish);
+        // 2.修改口味表
+        // 2.1删除原有口味
+        LambdaUpdateWrapper<DishFlavor> dishFlavorLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        dishFlavorLambdaUpdateWrapper.eq(DishFlavor::getDishId, dishDTO.getId());
+        dishFlavorService.remove(dishFlavorLambdaUpdateWrapper);
+        // 2.2添加传入口味
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        for (DishFlavor flavor : flavors) {
+            /* 一个一个存
+            DishFlavor dishFlavor = new DishFlavor();
+            BeanUtils.copyProperties(flavor, dishFlavor);
+            dishFlavor.setDishId(dishDTO.getId());
+            dishFlavorService.save(dishFlavor);
+             */
+            flavor.setDishId(dishDTO.getId());
+        }
+        dishFlavorService.saveBatch(flavors);
+        return Result.success();
     }
 }
