@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 
+import java.util.List;
+
 /**
 * @author kevonlin
 * @description 针对表【dish(菜品)】的数据库操作Service
@@ -31,4 +33,13 @@ public interface DishService extends IService<Dish> {
      * @description 菜品分页查询
      **/
     Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO);
+
+    /*
+     * @param ids 要删除的菜品ID
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/10 11:12
+     * @description 批量删除菜品
+     **/
+    Result deleteDish(List<Long> ids);
 }

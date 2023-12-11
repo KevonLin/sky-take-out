@@ -5,13 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishFlavorMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -38,7 +43,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
     @Autowired
-    private CategoryMapper categoryMapper;
+    private SetmealDishMapper setmealDishMapper;
+//    @Autowired
+//    private CategoryMapper categoryMapper;
 
     @Override
     public Result addDish(DishDTO dishDTO) {
@@ -99,6 +106,39 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         IPage<Map> pageMap = dishMapper.pageQuery(page, dishPageQueryDTO);
         PageResult pageResult = new PageResult(pageMap.getTotal(), pageMap.getRecords());
         return Result.success(pageResult);
+    }
+
+    @Override
+    public Result deleteDish(List<Long> ids) {
+        // 炫耀操作的表: dish dish_flavor setmeal_dish
+        if (ids.size() == 0) {
+            return Result.error("未选中菜品");
+        }
+        // 1.判断是否在售卖
+        for (Long id : ids) {
+            LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishLambdaQueryWrapper.eq(Dish::getId, id)
+                    .eq(Dish::getStatus, StatusConstant.ENABLE);
+            if (dishMapper.selectCount(dishLambdaQueryWrapper) > 0) {
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+        }
+        // 2.根据DishID在setmeal_dish中查询是否有关联套餐
+        LambdaQueryWrapper<SetmealDish> setmealDishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        setmealDishLambdaQueryWrapper.eq(SetmealDish::getDishId, ids);
+        Long count = setmealDishMapper.selectCount(setmealDishLambdaQueryWrapper);
+        if (count > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+        // 3.删除菜品数据
+        dishMapper.deleteBatchIds(ids);
+        // 4.删除菜品相关口味
+        for (Long id : ids) {
+            LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, id);
+            dishFlavorMapper.delete(dishFlavorLambdaQueryWrapper);
+        }
+        return Result.success();
     }
 }
 

@@ -10,7 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author kevonlin
@@ -37,5 +40,13 @@ public class DishController {
     @ApiOperation("菜品分页查询")
     public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO){
         return dishService.getDishPage(dishPageQueryDTO);
+    }
+
+    @Transactional
+    @DeleteMapping
+    @ApiOperation("批量删除菜品")
+    public Result deleteDish(@RequestParam List<Long> ids){
+        log.info("菜品批量删除：{}", ids);
+        return dishService.deleteDish(ids);
     }
 }
