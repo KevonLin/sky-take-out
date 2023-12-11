@@ -29,19 +29,39 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    /*
+     * @param dishDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 20:12
+     * @description 添加菜品
+     **/
     @PostMapping
     @ApiOperation("添加菜品")
     public Result addDish(@RequestBody DishDTO dishDTO) {
         return dishService.addDish(dishDTO);
     }
 
-
+    /*
+     * @param dishPageQueryDTO
+     * @return com.sky.result.Result<com.sky.result.PageResult>
+     * @author kevonlin
+     * @create 2023/12/11 20:12
+     * @description 菜品分页查询
+     **/
     @GetMapping("page")
     @ApiOperation("菜品分页查询")
     public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO){
         return dishService.getDishPage(dishPageQueryDTO);
     }
 
+    /*
+     * @param ids
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 20:12
+     * @description 批量删除菜品
+     **/
     @Transactional
     @DeleteMapping
     @ApiOperation("批量删除菜品")

@@ -58,6 +58,13 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /*
+     * @param employeeDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 20:11
+     * @description 添加员工
+     **/
     @PostMapping
     @ApiOperation("添加员工")
     public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
@@ -65,6 +72,13 @@ public class EmployeeController {
         return employeeService.addEmployee(employeeDTO);
     }
 
+    /*
+     * @param employeePageQueryDTO
+     * @return com.sky.result.Result<com.sky.result.PageResult>
+     * @author kevonlin
+     * @create 2023/12/11 20:11
+     * @description 查询员工
+     **/
     @GetMapping("page")
     @ApiOperation("查询员工")
     public Result<PageResult> getPage(EmployeePageQueryDTO employeePageQueryDTO) {
@@ -72,6 +86,14 @@ public class EmployeeController {
         return employeeService.getPage(employeePageQueryDTO);
     }
 
+    /*
+     * @param status
+     * @param id
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 20:11
+     * @description 修改员工账号状态
+     **/
     @PostMapping("status/{status}")
     @ApiOperation("修改员工账号状态")
     // @PathVariable ("status") 与路径一直可以不用写value
@@ -81,6 +103,13 @@ public class EmployeeController {
         return employeeService.toggleStatus(status, id);
     }
 
+    /*
+     * @param id
+     * @return com.sky.result.Result<com.sky.entity.Employee>
+     * @author kevonlin
+     * @create 2023/12/11 20:11
+     * @description 根据ID查询员工信息
+     **/
     @GetMapping("{id}")
     @ApiOperation("根据ID查询员工信息")
     public Result<Employee> getEmployeeById(@PathVariable Integer id) {
@@ -90,6 +119,13 @@ public class EmployeeController {
         return Result.success(employee);
     }
 
+    /*
+     * @param employeeDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/11 20:11
+     * @description 编辑员工信息
+     **/
     @PutMapping
     @ApiOperation("编辑员工信息")
     public Result editInfo(@RequestBody EmployeeDTO employeeDTO) {
