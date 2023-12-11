@@ -133,10 +133,20 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         // 3.删除菜品数据
         dishMapper.deleteBatchIds(ids);
         // 4.删除菜品相关口味
+        List<DishFlavor> dishFlavors = null;
         for (Long id : ids) {
+            /* 删除需要多条SQL语句
             LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
             dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, id);
             dishFlavorMapper.delete(dishFlavorLambdaQueryWrapper);
+             */
+            // 将ID封装到List中使用DeleteBatchIds删除口味
+            LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, id);
+            dishFlavors = dishFlavorMapper.selectList(dishFlavorLambdaQueryWrapper);
+        }
+        if (dishFlavors != null) {
+            dishFlavorMapper.deleteBatchIds(dishFlavors);
         }
         return Result.success();
     }
