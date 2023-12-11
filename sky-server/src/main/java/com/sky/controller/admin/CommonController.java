@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("admin/common")
 @Slf4j
-@Api("通用接口")
+@Api(tags = "通用接口")
 public class CommonController {
     @Autowired
     private MinIoUtil minIoUtil;

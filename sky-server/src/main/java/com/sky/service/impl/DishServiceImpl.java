@@ -2,6 +2,7 @@ package com.sky.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -159,6 +160,20 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         // 4.装如VO
         dishVO.setFlavors(dishFlavors);
         return dishVO;
+    }
+
+    @Override
+    public List<Dish> getByCategoryId(Long categoryId) {
+        LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishLambdaQueryWrapper.eq(Dish::getCategoryId, categoryId);
+        return dishMapper.selectList(dishLambdaQueryWrapper);
+    }
+
+    @Override
+    public void toggleStatus(Integer status, Long id) {
+        Dish dish = dishMapper.selectById(id);
+        dish.setStatus(status);
+        dishMapper.updateById(dish);
     }
 }
 

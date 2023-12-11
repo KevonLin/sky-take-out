@@ -52,4 +52,23 @@ public interface DishService extends IService<Dish> {
      * @description 根据菜品ID获取相关菜品的详细信息以及口味信息
      **/
     DishVO getDishByIdWithFlavor(Long id);
+
+    /*
+     * @param categoryId
+     * @return com.sky.entity.Dish
+     * @author kevonlin
+     * @create 2023/12/11 23:15
+     * @description 根据类别ID获取
+     **/
+    List<Dish> getByCategoryId(Long categoryId);
+
+    /*
+     * @param status
+     * @param id
+     * @return void
+     * @author kevonlin
+     * @create 2023/12/11 23:39
+     * @description 修改菜品售卖状态
+     **/
+    void toggleStatus(Integer status, Long id);
 }

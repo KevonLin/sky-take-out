@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("admin/dish")
 @Slf4j
-@Api("菜品相关接口")
+@Api(tags = "菜品相关接口")
 public class DishController {
     @Autowired
     private DishService dishService;
@@ -131,6 +131,27 @@ public class DishController {
             flavor.setDishId(dishDTO.getId());
         }
         dishFlavorService.saveBatch(flavors);
+        return Result.success();
+    }
+
+    /*
+     * @param categoryId
+     * @return com.sky.result.Result<com.sky.entity.Dish>
+     * @author kevonlin
+     * @create 2023/12/11 23:13
+     * @description 根据分类ID查询菜品信息
+     **/
+    @GetMapping("list")
+    @ApiOperation("根据分类ID查询菜品信息")
+    public Result<List<Dish>> getByCategoryId(Long categoryId) {
+        List<Dish> dishes = dishService.getByCategoryId(categoryId);
+        return Result.success(dishes);
+    }
+
+    @PostMapping("status/{status}")
+    @ApiOperation("修改菜品售卖状态")
+    public Result toggleStatus(@PathVariable Integer status, Long id) {
+        dishService.toggleStatus(status, id);
         return Result.success();
     }
 }
