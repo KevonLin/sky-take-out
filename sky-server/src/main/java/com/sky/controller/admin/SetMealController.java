@@ -2,10 +2,13 @@ package com.sky.controller.admin;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealDishService;
@@ -75,6 +78,17 @@ public class SetMealController {
     @DeleteMapping
     @ApiOperation("批量删除套餐")
     public Result deleteBatchSet(@RequestParam List<Long> ids) {
+        // 起售中的套餐不能删除
+        ids.forEach(id -> {
+            LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            setmealLambdaQueryWrapper.eq(Setmeal::getId, id)
+                    .eq(Setmeal::getStatus, StatusConstant.ENABLE);
+            if (setmealService.count(setmealLambdaQueryWrapper) > 0) {
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        });
+
+        // 批量删除套餐
         setmealService.removeBatchByIds(ids);
         ids.forEach(id -> {
             LambdaUpdateWrapper<SetmealDish> setmealDishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
