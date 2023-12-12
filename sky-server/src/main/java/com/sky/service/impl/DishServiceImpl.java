@@ -171,9 +171,16 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
     @Override
     public void toggleStatus(Integer status, Long id) {
+        /* 两次数据库操作，效率低下
         Dish dish = dishMapper.selectById(id);
         dish.setStatus(status);
         dishMapper.updateById(dish);
+         */
+
+        LambdaUpdateWrapper<Dish> dishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        dishLambdaUpdateWrapper.eq(Dish::getId, id)
+                .set(Dish::getStatus, status);
+        dishMapper.update(null, dishLambdaUpdateWrapper);
     }
 }
 

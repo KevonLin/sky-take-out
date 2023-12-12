@@ -106,11 +106,49 @@ public class SetMealController {
         return Result.success();
     }
 
+    /*
+     * @param id
+     * @return com.sky.result.Result<com.sky.vo.SetmealVO>
+     * @author kevonlin
+     * @create 2023/12/12 20:58
+     * @description 根据ID查询套餐
+     **/
     @GetMapping("{id}")
     @ApiOperation("根据ID查询套餐")
     public Result<SetmealVO> getSetmealById(@PathVariable Long id) {
         log.info("根据ID查询套餐:{}", id);
         SetmealVO setmealVO = setmealService.getSetmealById(id);
         return Result.success(setmealVO);
+    }
+
+    /*
+     * @param setmealDTO
+     * @return com.sky.result.Result
+     * @author kevonlin
+     * @create 2023/12/12 21:05
+     * @description 修改套餐并且重新插入关联菜品表
+     **/
+    @PutMapping
+    @ApiOperation("修改套餐")
+    public Result updateSetMeal(@RequestBody SetmealDTO setmealDTO) {
+        // 1.修改套餐表
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+        setmealService.updateById(setmeal);
+        // 2.根据套餐ID删除关联菜品表中的菜品
+        setmealDishService.removeById(setmealDTO.getId());
+        // 3.根据传入的关联菜品重新插入 在Controller中调用saveBatch方法批量插入
+        setmealDishService.saveBatch(setmealDTO.getSetmealDishes());
+        return Result.success();
+    }
+
+    @PostMapping("status/{status}")
+    @ApiOperation("修改套餐状态")
+    public Result toggleSetMealStatus(@PathVariable Integer status, Long id) {
+        LambdaUpdateWrapper<Setmeal> setmealLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        setmealLambdaUpdateWrapper.eq(Setmeal::getId, id)
+                .set(Setmeal::getStatus, status);
+        setmealService.update(setmealLambdaUpdateWrapper);
+        return Result.success();
     }
 }
