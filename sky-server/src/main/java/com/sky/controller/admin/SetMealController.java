@@ -1,5 +1,7 @@
 package com.sky.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
@@ -15,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +50,9 @@ public class SetMealController {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
         setmealService.save(setmeal);
+        Long id = setmeal.getId();
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(id));
         setmealDishService.saveBatch(setmealDishes);
         return Result.success();
     }
@@ -61,9 +66,21 @@ public class SetMealController {
      **/
     @GetMapping("page")
     @ApiOperation("套餐分页查询")
-    public Result<PageResult> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO){
+    public Result<PageResult> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
         log.info("套餐分页查询：{}", setmealPageQueryDTO);
         PageResult pageResult = setmealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @DeleteMapping
+    @ApiOperation("批量删除套餐")
+    public Result deleteBatchSet(@RequestParam List<Long> ids) {
+        setmealService.removeBatchByIds(ids);
+        ids.forEach(id -> {
+            LambdaUpdateWrapper<SetmealDish> setmealDishLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+            setmealDishLambdaUpdateWrapper.eq(SetmealDish::getSetmealId, id);
+            setmealDishService.remove(setmealDishLambdaUpdateWrapper);
+        });
+        return Result.success();
     }
 }
