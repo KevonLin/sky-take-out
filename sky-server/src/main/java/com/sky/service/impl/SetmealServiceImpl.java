@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
@@ -32,6 +34,8 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
     private SetmealMapper setmealMapper;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private SetmealDishMapper setmealDishMapper;
 
     @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
@@ -63,6 +67,18 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
             setmealVOs.add(setmealVO);
         });
         return new PageResult(setmealIPage.getTotal(), setmealVOs);
+    }
+
+    @Override
+    public SetmealVO getSetmealById(Long id) {
+        Setmeal setmeal = setmealMapper.selectById(id);
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal, setmealVO);
+        LambdaQueryWrapper<SetmealDish> setmealDishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        setmealDishLambdaQueryWrapper.eq(SetmealDish::getSetmealId, id);
+        List<SetmealDish> setmealDishes = setmealDishMapper.selectList(setmealDishLambdaQueryWrapper);
+        setmealVO.setSetmealDishes(setmealDishes);
+        return setmealVO;
     }
 }
 

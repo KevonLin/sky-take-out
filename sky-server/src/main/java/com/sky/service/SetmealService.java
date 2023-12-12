@@ -5,6 +5,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.result.PageResult;
+import com.sky.vo.SetmealVO;
 
 /**
 * @author kevonlin
@@ -20,4 +21,13 @@ public interface SetmealService extends IService<Setmeal> {
      * @description 套餐分页查询
      **/
     PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /*
+     * @param id
+     * @return com.sky.vo.SetmealVO
+     * @author kevonlin
+     * @create 2023/12/12 20:48
+     * @description 根据套餐ID查询套餐详细信息以及关联的菜品
+     **/
+    SetmealVO getSetmealById(Long id);
 }
