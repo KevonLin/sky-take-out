@@ -12,3 +12,10 @@ sky:
     access-key: minio
     secret-key: minio123
     bucket-name: minio-demo
+
+spring:
+  redis:
+    host: 192.168.56.2
+    port: 6379
+    password: 123456
+    database: 0 # 一共有16个数据库(0-15) 默认为0
