@@ -14,8 +14,8 @@ sky:
     bucket-name: minio-demo
 
   wechat:
-    appid: ${wxd6beffe7514085eb}
-    secret: ${9f3f1c0cbdffb6e22749510e6915c868}
+    appid: wxd6beffe7514085eb
+    secret: 9f3f1c0cbdffb6e22749510e6915c868
 
 spring:
   redis:
