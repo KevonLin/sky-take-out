@@ -182,6 +182,30 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
                 .set(Dish::getStatus, status);
         dishMapper.update(null, dishLambdaUpdateWrapper);
     }
+
+    @Override
+    public List<DishVO> getDishByCategoryIdWithFlavors(Long categoryId) {
+        // 要查询启售中的菜品
+        LambdaQueryWrapper<Dish> dishLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishLambdaQueryWrapper.eq(Dish::getCategoryId, categoryId)
+                .eq(Dish::getStatus, StatusConstant.ENABLE);
+        List<Dish> dishes = dishMapper.selectList(dishLambdaQueryWrapper);
+        List<DishVO> dishVOs = new ArrayList<>();
+        dishes.forEach(dish -> {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(dish, dishVO);
+            List<DishFlavor> flavors = getFlavorsByDishId(dish.getId());
+            dishVO.setFlavors(flavors);
+            dishVOs.add(dishVO);
+        });
+        return dishVOs;
+    }
+
+    private List<DishFlavor> getFlavorsByDishId(Long id) {
+        LambdaQueryWrapper<DishFlavor> dishFlavorLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        dishFlavorLambdaQueryWrapper.eq(DishFlavor::getDishId, id);
+        return dishFlavorMapper.selectList(dishFlavorLambdaQueryWrapper);
+    }
 }
 
 

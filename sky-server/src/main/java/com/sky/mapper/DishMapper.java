@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +29,15 @@ public interface DishMapper extends BaseMapper<Dish> {
      * @description 联表分页查询
      **/
     IPage<Map> pageQuery(IPage<DishVO> page, @Param("dishPageQueryDTO") DishPageQueryDTO dishPageQueryDTO);
+
+    /*
+     * @param id 套餐ID
+     * @return java.util.List<com.sky.vo.DishItemVO>
+     * @author kevonlin
+     * @create 2023/12/17 12:17
+     * @description 根据套餐id查询包含的菜品列表
+     **/
+    List<DishItemVO> getDishItemVOListBySetMealId(Long id);
 }
 
 

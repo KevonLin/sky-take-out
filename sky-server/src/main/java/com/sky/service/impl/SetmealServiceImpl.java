@@ -6,16 +6,20 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,8 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
     private CategoryMapper categoryMapper;
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private DishMapper dishMapper;
 
     @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
@@ -82,8 +88,17 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
         setmealVO.setSetmealDishes(setmealDishes);
         return setmealVO;
     }
+
+    @Override
+    public List<Setmeal> getSetmealListByCategoryId(Long categoryId) {
+        LambdaQueryWrapper<Setmeal> setmealLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        setmealLambdaQueryWrapper.eq(Setmeal::getCategoryId, categoryId)
+                .eq(Setmeal::getStatus, StatusConstant.ENABLE);
+        return setmealMapper.selectList(setmealLambdaQueryWrapper);
+    }
+
+    @Override
+    public List<DishItemVO> getDishItemVOListBySetMealId(Long id) {
+        return dishMapper.getDishItemVOListBySetMealId(id);
+    }
 }
-
-
-
-

@@ -5,7 +5,10 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.result.PageResult;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.SetmealVO;
+
+import java.util.List;
 
 /**
 * @author kevonlin
@@ -30,4 +33,22 @@ public interface SetmealService extends IService<Setmeal> {
      * @description 根据套餐ID查询套餐详细信息以及关联的菜品
      **/
     SetmealVO getSetmealById(Long id);
+
+    /*
+     * @param categoryId
+     * @return java.util.List<com.sky.entity.Setmeal>
+     * @author kevonlin
+     * @create 2023/12/17 11:46
+     * @description 根据分类id查询套餐
+     **/
+    List<Setmeal> getSetmealListByCategoryId(Long categoryId);
+
+    /*
+     * @param id
+     * @return java.util.List<com.sky.vo.DishItemVO>
+     * @author kevonlin
+     * @create 2023/12/17 12:01
+     * @description 根据套餐id查询包含的菜品列表
+     **/
+    List<DishItemVO> getDishItemVOListBySetMealId(Long id);
 }

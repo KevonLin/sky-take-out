@@ -71,4 +71,13 @@ public interface DishService extends IService<Dish> {
      * @description 修改菜品售卖状态
      **/
     void toggleStatus(Integer status, Long id);
+
+    /*
+     * @param categoryId
+     * @return java.util.List<com.sky.vo.DishVO>
+     * @author kevonlin
+     * @create 2023/12/17 11:30
+     * @description 根据分类id查询菜品
+     **/
+    List<DishVO> getDishByCategoryIdWithFlavors(Long categoryId);
 }

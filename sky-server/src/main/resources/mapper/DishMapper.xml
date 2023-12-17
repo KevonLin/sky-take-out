@@ -42,4 +42,12 @@
         </where>
         order by create_time desc
     </select>
+
+    <!--List<DishItemVO> getDishItemVOListBySetMealId(Long id);-->
+    <select id="getDishItemVOListBySetMealId" resultType="com.sky.vo.DishItemVO">
+        select d.name as name, copies, image, description
+        from setmeal_dish sd
+        left join dish d on sd.dish_id = d.id
+        where d.status = 1 and sd.setmeal_id = #{id}
+    </select>
 </mapper>
