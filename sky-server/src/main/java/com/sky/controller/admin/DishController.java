@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class DishController {
      **/
     @PostMapping
     @ApiOperation("添加菜品")
+    @CacheEvict(cacheNames = "dishesCache", key = "#dishDTO.categoryId")
     public Result addDish(@RequestBody DishDTO dishDTO) {
         dishService.addDish(dishDTO);
         return Result.success();
@@ -75,6 +77,7 @@ public class DishController {
     @Transactional
     @DeleteMapping
     @ApiOperation("批量删除菜品")
+    @CacheEvict(cacheNames = "dishesCache", allEntries = true)
     public Result deleteDish(@RequestParam List<Long> ids) {
         log.info("菜品批量删除：{}", ids);
         if (ids.size() == 0) {
@@ -108,6 +111,7 @@ public class DishController {
      **/
     @PutMapping
     @ApiOperation("修改菜品")
+    @CacheEvict(cacheNames = "dishesCache", key = "#dishDTO.categoryId")
     public Result updateDish(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品:{}", dishDTO);
         // 1.修改菜品表
@@ -150,6 +154,7 @@ public class DishController {
 
     @PostMapping("status/{status}")
     @ApiOperation("修改菜品售卖状态")
+    @CacheEvict(cacheNames = "dishesCache", allEntries = true)
     public Result toggleStatus(@PathVariable Integer status, Long id) {
         dishService.toggleStatus(status, id);
         return Result.success();
