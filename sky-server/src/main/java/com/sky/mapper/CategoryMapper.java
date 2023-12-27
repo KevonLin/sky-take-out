@@ -1,14 +1,8 @@
 package com.sky.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.sky.dto.CategoryPageQueryDTO;
-import com.sky.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sky.entity.Employee;
+import com.sky.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.Map;
 
 /**
 * @author kevonlin

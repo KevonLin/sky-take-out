@@ -1,10 +1,9 @@
 package com.sky.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.sky.result.PageResult;
-import com.sky.result.Result;
 
 import java.util.List;
 

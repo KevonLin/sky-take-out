@@ -7,18 +7,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
-import com.sky.entity.Employee;
-import com.sky.result.PageResult;
-import com.sky.result.Result;
-import com.sky.service.CategoryService;
 import com.sky.mapper.CategoryMapper;
+import com.sky.result.PageResult;
+import com.sky.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author kevonlin
